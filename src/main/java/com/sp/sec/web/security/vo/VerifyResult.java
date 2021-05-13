@@ -1,17 +1,19 @@
 package com.sp.sec.web.security.vo;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
 @Getter
 @ToString
+@EqualsAndHashCode
 public class VerifyResult {
     private final String userId;
-    private final boolean verify;
+    private final boolean valid;
 
-    private VerifyResult(String userId, boolean verify) {
+    private VerifyResult(String userId, boolean valid) {
         this.userId = userId;
-        this.verify = verify;
+        this.valid = valid;
     }
 
     public static VerifyResult successful(String userId) {

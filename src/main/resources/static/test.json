@@ -1,0 +1,17 @@
+{
+  "content": [
+    {
+      "id": 1,
+      "name": "user1",
+      "email": "user1@test.com"
+    },
+    {
+      "id": 2,
+      "name": "admin",
+      "email": "admin@test.com"
+    }
+  ],
+  "number": 0,
+  "size": 10,
+  "totalElements": 2
+}

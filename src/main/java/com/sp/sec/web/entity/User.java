@@ -3,17 +3,14 @@ package com.sp.sec.web.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sp.sec.web.entity.base.BaseTimeEntity;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.Set;
 
 @Getter
 @Entity
-@ToString
+@ToString(exclude = {"authorities"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseTimeEntity {
 
@@ -22,21 +19,42 @@ public class User extends BaseTimeEntity {
     @Column(name = "user_id")
     private Long id;
 
+    private String name;
+
     @Column(unique = true)
     private String email;
-
-    private String name;
 
     @JsonIgnore
     private String password;
 
     @Embedded
-    private Authorities authorities = new Authorities();
+    @JsonIgnore
+    private final Authorities authorities = new Authorities();
+
+    private boolean enabled;
 
     @Builder
-    public User(String email, String name, String password) {
+    private User(String email, String password, String name, boolean enabled) {
         this.email = email;
-        this.name = name;
         this.password = password;
+        this.name = name;
+        this.enabled = enabled;
+    }
+
+    public static User create(String email, String password, String name, Authority... authorities) {
+        User user = User.builder()
+                .email(email)
+                .password(password)
+                .name(name)
+                .enabled(true)
+                .build();
+
+        user.authorities.addAll(authorities, user);
+
+        return user;
+    }
+
+    public Set<GrantedAuthority> getGrantedAuthorities() {
+        return authorities.getGrantedAuthorities();
     }
 }

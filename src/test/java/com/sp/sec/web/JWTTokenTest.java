@@ -6,6 +6,7 @@ import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.sp.sec.web.util.JWTUtil;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
@@ -17,6 +18,7 @@ import static org.assertj.core.api.Assertions.*;
 class JWTTokenTest {
 
     @Test
+    @DisplayName("토큰 생성 확인하기")
     void test() throws InterruptedException {
         Algorithm algo = Algorithm.HMAC512("hello");
 

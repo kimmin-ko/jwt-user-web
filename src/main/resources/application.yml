@@ -13,4 +13,14 @@ spring:
       ddl-auto: create
     properties:
       hibernate:
+        default_batch_fetch_size: 500
         format-sql: true
+
+
+auth:
+  jwt:
+    secret: hello
+    token-life-time: 600
+    token-refresh-time: 2592000
+  token:
+    aes-secret-key: hi
