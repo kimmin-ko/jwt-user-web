@@ -7,8 +7,8 @@ import lombok.ToString;
 @Getter
 @ToString
 public abstract class Token {
-    protected final String token;
-    protected final String secretKey;
+    protected String token;
+    protected String secretKey;
 
     protected Token(String token, String secretKey) {
         this.token = token;
@@ -19,8 +19,8 @@ public abstract class Token {
         return AES256Util.encryptByKey(secretKey, token);
     }
 
-    public String getDecryptToken() {
-        return AES256Util.decryptByKey(secretKey, token);
+    public void decryptToken() {
+        this.token = AES256Util.decryptByKey(secretKey, this.token);
     }
 
     public enum Type {

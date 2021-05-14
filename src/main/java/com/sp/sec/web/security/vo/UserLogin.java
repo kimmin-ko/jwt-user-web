@@ -8,11 +8,11 @@ import lombok.*;
 public class UserLogin {
     private String username;
     private String password;
-    private RefreshToken refreshToken;
+    private String refreshToken;
     private Type type = Type.LOGIN;
 
     @Builder
-    private UserLogin(String username, String password, RefreshToken refreshToken, Type type) {
+    private UserLogin(String username, String password, String refreshToken, Type type) {
         this.username = username;
         this.password = password;
         this.refreshToken = refreshToken;

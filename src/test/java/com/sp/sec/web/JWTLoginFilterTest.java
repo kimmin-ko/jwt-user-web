@@ -89,14 +89,13 @@ public class JWTLoginFilterTest {
     @DisplayName("2. refresh token 으로 access token 재발급한다.")
     void refresh_token_login() {
         // given
-        System.out.println("authProperties = " + authProperties.getAesSecretKey());
-
         UserLogin refreshToken = UserLogin.builder()
-                .refreshToken(RefreshToken.generate("refreshToken", authProperties.getAesSecretKey()))
+                .refreshToken("암호화된 refreshToken")
                 .type(UserLogin.Type.REFRESH)
                 .build();
 
         // when
+        
 
         // then
 
