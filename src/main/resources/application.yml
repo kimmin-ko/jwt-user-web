@@ -16,11 +16,10 @@ spring:
         default_batch_fetch_size: 500
         format-sql: true
 
-
 auth:
   jwt:
-    secret: hello
-    token-life-time: 600
-    token-refresh-time: 2592000
+    secret-sign: 2dc1bd9fb515d95b149f5f18e4704e8b
+    token-life-time: 7200 # 2 hours
+    token-refresh-time: 2592000 # 30 day
   token:
-    aes-secret-key: hi
+    secret-key: 1d6ee82de3af77e3d7074853357e8c03

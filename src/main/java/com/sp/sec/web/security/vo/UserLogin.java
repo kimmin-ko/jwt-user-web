@@ -1,6 +1,9 @@
 package com.sp.sec.web.security.vo;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Getter
 @ToString
@@ -9,7 +12,7 @@ public class UserLogin {
     private String username;
     private String password;
     private String refreshToken;
-    private Type type = Type.LOGIN;
+    private Type type;
 
     @Builder
     private UserLogin(String username, String password, String refreshToken, Type type) {
@@ -17,10 +20,6 @@ public class UserLogin {
         this.password = password;
         this.refreshToken = refreshToken;
         this.type = type;
-    }
-
-    public boolean isLogin() {
-        return this.type == Type.LOGIN;
     }
 
     public boolean isRefresh() {

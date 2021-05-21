@@ -9,12 +9,17 @@ import java.util.Set;
 
 @Getter
 public class SecUser implements UserDetails {
+    private static final long serialVersionUID = 861761230644043700L;
 
     private final Long userId;
     private final Set<GrantedAuthority> authorities;
     private final String email;
     private final String password;
     private final boolean enabled;
+
+    public SecUser(Long userId, String email, String password, boolean enabled) {
+        this(userId, null, email, password, enabled);
+    }
 
     private SecUser(Long userId, Set<GrantedAuthority> authorities, String email, String password, boolean enabled) {
         this.userId = userId;
@@ -24,7 +29,7 @@ public class SecUser implements UserDetails {
         this.enabled = enabled;
     }
 
-    public static SecUser createBy(User user) {
+    public static SecUser createFrom(User user) {
         return new SecUser(
                 user.getId(),
                 user.getGrantedAuthorities(),

@@ -5,14 +5,14 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.sp.sec.web.properties.AuthProperties;
-import com.sp.sec.web.security.vo.AccessToken;
-import com.sp.sec.web.security.vo.RefreshToken;
 import com.sp.sec.web.security.vo.Token;
 import com.sp.sec.web.security.vo.VerifyResult;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 
+@Slf4j
 @Component
 public class JWTUtil {
     public static final String AUTH_HEADER = "Authentication";
@@ -24,7 +24,7 @@ public class JWTUtil {
 
     public JWTUtil(AuthProperties authProperties) {
         this.authProperties = authProperties;
-        this.algorithm = Algorithm.HMAC512(authProperties.getSecret());
+        this.algorithm = Algorithm.HMAC512(authProperties.getSecretSign());
     }
 
     public String generate(Long userId, Token.Type tokenType) {
@@ -37,21 +37,12 @@ public class JWTUtil {
                 .sign(algorithm);
     }
 
-    public AccessToken generateAccessToken(Long userId) {
-        return AccessToken.generate(
-                generate(userId, Token.Type.ACCESS),
-                authProperties.getAesSecretKey()
-        );
-    }
-
-    public RefreshToken generateRefreshToken(Long userId) {
-        return RefreshToken.generate(
-                generate(userId, Token.Type.REFRESH),
-                authProperties.getAesSecretKey()
-        );
-    }
-
     public VerifyResult verify(Token token) {
+        if (token.isEncrypt()) {
+            log.info("*** 암호화된 토큰이 JWTUtil.verify()로 들어왔습니다. ***");
+            token.decryptBy(authProperties.getSecretKey());
+        }
+
         try {
             DecodedJWT decode = JWT.require(algorithm).build().verify(token.getToken());
             return VerifyResult.successful(decode.getSubject());

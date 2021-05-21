@@ -13,8 +13,8 @@ public class AuthProperties {
     private JWT jwt;
     private Token token;
 
-    public String getSecret() {
-        return this.jwt.secret;
+    public String getSecretSign() {
+        return this.jwt.secretSign;
     }
 
     public Long getTokenLifeTime() {
@@ -25,19 +25,19 @@ public class AuthProperties {
         return this.jwt.tokenRefreshTime;
     }
 
-    public String getAesSecretKey() {
-        return this.token.aesSecretKey;
+    public String getSecretKey() {
+        return this.token.secretKey;
     }
 
     @Data
     static class JWT {
-        private String secret;
+        private String secretSign;
         private Long tokenLifeTime;
         private Long tokenRefreshTime;
     }
 
     @Data
     static class Token {
-        private String aesSecretKey;
+        private String secretKey;
     }
 }

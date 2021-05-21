@@ -23,7 +23,7 @@ public class SecUserDetailsService implements UserDetailsService {
         User user = userRepository.findByEmail(username)
                 .orElseThrow(EntityNotFoundException::new);
 
-        return SecUser.createBy(user);
+        return SecUser.createFrom(user);
     }
 
 }

@@ -40,7 +40,7 @@ public class JWTCheckFilter extends BasicAuthenticationFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain chain) throws IOException, ServletException {
-        Optional<AccessToken> accessToken = AccessToken.convert(request.getHeader(AUTH_HEADER), authProperties.getAesSecretKey());
+        Optional<AccessToken> accessToken = AccessToken.convert(request.getHeader(AUTH_HEADER), authProperties.getSecretKey());
 
         if (accessToken.isEmpty()) {
             chain.doFilter(request, response);
@@ -54,7 +54,7 @@ public class JWTCheckFilter extends BasicAuthenticationFilter {
             User user = userService.findByIdWithAuthorities(Long.parseLong(verify.getUserId()))
                     .orElseThrow(EntityNotFoundException::new);
 
-            SecUser principle = SecUser.createBy(user);
+            SecUser principle = SecUser.createFrom(user);
 
             Authentication authentication = new UsernamePasswordAuthenticationToken(
                     principle,

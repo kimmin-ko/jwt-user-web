@@ -3,24 +3,35 @@ package com.sp.sec.web.security.vo;
 import com.sp.sec.web.util.AES256Util;
 import lombok.Getter;
 import lombok.ToString;
+import org.springframework.util.Assert;
 
 @Getter
 @ToString
 public abstract class Token {
-    protected String token;
-    protected String secretKey;
+    private String token;
+    private boolean isEncrypt;
 
-    protected Token(String token, String secretKey) {
+    protected Token(String token, boolean isEncrypt) {
         this.token = token;
-        this.secretKey = secretKey;
+        this.isEncrypt = isEncrypt;
     }
 
-    public String getEncryptToken() {
-        return AES256Util.encryptByKey(secretKey, token);
+    public void encryptBy(String secretKey) {
+        Assert.notNull(secretKey, "The aes secret key must not be null.");
+
+        if (!isEncrypt) {
+            isEncrypt = true;
+            token = AES256Util.encryptBy(secretKey, token);
+        }
     }
 
-    public void decryptToken() {
-        this.token = AES256Util.decryptByKey(secretKey, this.token);
+    public void decryptBy(String secretKey) {
+        Assert.notNull(secretKey, "The aes secret key must not be null.");
+
+        if (isEncrypt) {
+            isEncrypt = false;
+            token = AES256Util.decryptBy(secretKey, token);
+        }
     }
 
     public enum Type {

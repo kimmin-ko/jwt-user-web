@@ -68,7 +68,7 @@ public class UserControllerIntegrationTest {
         }
     }
 
-    Optional<AccessToken> getToken(String username, String password) {
+    AccessToken getToken(String username, String password) {
         UserLogin login = UserLogin.builder()
                 .username(username)
                 .password(password)
@@ -77,7 +77,7 @@ public class UserControllerIntegrationTest {
         HttpEntity<UserLogin> body = new HttpEntity<>(login);
         ResponseEntity<String> response = restTemplate.exchange(uri("/login"), HttpMethod.POST, body, String.class);
 
-        return AccessToken.convert(response.getHeaders().get(AUTH_HEADER).get(0), authProperties.getAesSecretKey());
+        return AccessToken.convert(response.getHeaders().get(AUTH_HEADER).get(0), authProperties.getSecretKey()).get();
     }
 
     @BeforeEach
@@ -95,7 +95,7 @@ public class UserControllerIntegrationTest {
     @Test
     @DisplayName("1. admin 유저는 userList 를 가져올 수 있다.")
     void test() throws JsonProcessingException {
-        AccessToken accessToken = getToken(adminEmail, "1234").get();
+        AccessToken accessToken = getToken(adminEmail, "1234");
 
         ResponseEntity<String> response = restTemplate.exchange(
                 uri("/api/users"),
@@ -122,7 +122,7 @@ public class UserControllerIntegrationTest {
 
     private HttpEntity<Void> getTokenEntity(AccessToken token) {
         HttpHeaders headers = new HttpHeaders();
-        headers.add(AUTH_HEADER, BEARER + token.getEncryptToken());
+        headers.add(AUTH_HEADER, token.getBearerToken(authProperties.getSecretKey()));
         return new HttpEntity<>(headers);
     }
 

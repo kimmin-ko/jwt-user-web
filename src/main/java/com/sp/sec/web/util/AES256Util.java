@@ -37,11 +37,11 @@ public final class AES256Util {
         return new AES256Util(key);
     }
 
-    public static String encryptByKey(String key, String decVal) {
+    public static String encryptBy(String key, String decVal) {
         return AES256Util.createByKey(key).encrypt(decVal);
     }
 
-    public static String decryptByKey(String key, String encVal) {
+    public static String decryptBy(String key, String encVal) {
         return AES256Util.createByKey(key).decrypt(encVal);
     }
 

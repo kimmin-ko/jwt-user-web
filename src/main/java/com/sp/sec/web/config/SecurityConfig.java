@@ -2,6 +2,7 @@ package com.sp.sec.web.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sp.sec.web.properties.AuthProperties;
+import com.sp.sec.web.repository.UserRepository;
 import com.sp.sec.web.security.filter.JWTCheckFilter;
 import com.sp.sec.web.security.filter.JWTLoginFilter;
 import com.sp.sec.web.service.UserService;
@@ -27,6 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final AuthProperties authProperties;
 
     private final UserService userService;
+    private final UserRepository userRepository;
     private final UserDetailsService userDetailsService;
 
     @Bean
@@ -47,7 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        JWTLoginFilter loginFilter = new JWTLoginFilter(jwtUtil, objectMapper, authProperties.getAesSecretKey(), authenticationManager());
+        JWTLoginFilter loginFilter = new JWTLoginFilter(userRepository, jwtUtil, objectMapper, authProperties.getSecretKey(), authenticationManager());
         JWTCheckFilter checkFilter = new JWTCheckFilter(authenticationManager(), jwtUtil, userService, authProperties);
 
         http
